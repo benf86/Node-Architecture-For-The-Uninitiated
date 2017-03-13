@@ -9,8 +9,13 @@ const router = express.Router();
 
 router.use(bodyParser.urlencoded({ extended: true }));
 router.use(bodyParser.json());
-router.use('/', (req, res) => res.json('Hello World!'));
+
 app.use(router);
+const globals = {
+  config,
+  router,
+};
+require('./controllers/rest/router')(globals);
 
 console.log(`Server listening on port ${config.infrastructure.port} in environment ${process.env.NODE_ENV} with config\n${JSON.stringify(config, 0, 2)}`);
 
