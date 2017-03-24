@@ -15,6 +15,9 @@ const globals = {
   config,
   router,
 };
+
+globals.repositories = require('./repositories')(globals);
+globals.services = require('./services')(globals);
 require('./controllers/rest/router')(globals);
 
 console.log(`Server listening on port ${config.infrastructure.port} in environment ${process.env.NODE_ENV} with config\n${JSON.stringify(config, 0, 2)}`);
