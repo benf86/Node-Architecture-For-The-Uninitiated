@@ -3,6 +3,7 @@
 const config = require('./config')();
 const express = require('express');
 const bodyParser = require('body-parser');
+const db = require('./data')(config);
 
 const app = express();
 const router = express.Router();
@@ -14,6 +15,7 @@ app.use(router);
 const globals = {
   config,
   router,
+  db,
 };
 
 globals.repositories = require('./repositories')(globals);
