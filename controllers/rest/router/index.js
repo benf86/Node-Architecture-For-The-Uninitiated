@@ -5,10 +5,7 @@ const response = cb => (req, res) =>
   .tap(r => (Array.isArray(r) && r.length === 0
     ? res.status(404)
     : res.status(200)))
-  .then(r => res.json(r))
-  .catch((e) => {
-    res.json(e);
-  });
+  .then(r => res.json(r));
 
 module.exports = globals =>
   (routes(globals)

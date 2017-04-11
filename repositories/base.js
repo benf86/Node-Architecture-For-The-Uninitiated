@@ -1,20 +1,22 @@
 const _ = require('lodash');
 
 module.exports = globals => modelName => ({
-  get: params => query => body =>
-    globals.db(`${modelName}s`)
-    .where(params || query ? _.merge({}, params, query) : true),
+  get: meta => () => globals.db(`${modelName}s`)
+    .where(meta)
+    .then(models =>
+      models.map(model =>
+        new globals.models[`${modelName[0].toUpperCase()}${modelName.slice(1)}`](model))),
 
-  delete: params => query => body =>
+  delete: meta => () =>
     globals.db(`${modelName}s`)
-    .where(params)
+    .where(meta)
     .delete(),
 
-  save: params => query => body =>
-    (params.id
+  save: meta => model =>
+    (meta.id
       ? globals.db(`${modelName}s`)
-        .where(params)
-        .update(_.merge(body, { updated_at: new Date().toUTCString() }))
+        .where(meta)
+        .update(_.merge(model.toJSON(), { updated_at: new Date().toUTCString() }))
       : globals.db(`${modelName}s`)
-        .insert(body)),
+        .insert(model.toJSON())),
 });
